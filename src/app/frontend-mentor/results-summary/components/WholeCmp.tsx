@@ -1,5 +1,5 @@
-import { ComponentResult } from "./ComponentResult";
-import { ComponentSummary } from "./ComponentSummary";
+import { ResultCmp } from "./ResultCmp";
+import { SummaryCmp } from "./SummaryCmp";
 import { Hanken_Grotesk } from "next/font/google";
 
 const hankenGrotesk = Hanken_Grotesk({
@@ -11,8 +11,8 @@ const hankenGrotesk = Hanken_Grotesk({
 export function WholeComponent() {
   return (
     <main className={`${hankenGrotesk.className} md:flex text-lg`}>
-      <ComponentResult />
-      <ComponentSummary />
+      <ResultCmp />
+      <SummaryCmp />
     </main>
   );
 }

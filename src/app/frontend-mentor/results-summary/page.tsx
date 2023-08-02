@@ -1,4 +1,4 @@
-import { WholeComponent } from "./components/WholeComponent";
+import { WholeComponent } from "./components/WholeCmp";
 
 export default function ResultsSummary() {
   return (
