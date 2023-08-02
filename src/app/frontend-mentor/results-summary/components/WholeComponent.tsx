@@ -10,7 +10,7 @@ const hankenGrotesk = Hanken_Grotesk({
 
 export function WholeComponent() {
   return (
-    <main className={`${hankenGrotesk.className} md:flex`}>
+    <main className={`${hankenGrotesk.className} md:flex text-lg`}>
       <ComponentResult />
       <ComponentSummary />
     </main>
