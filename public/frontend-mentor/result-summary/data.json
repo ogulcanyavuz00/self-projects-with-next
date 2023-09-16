@@ -2,12 +2,12 @@
   {
     "category": "Reaction",
     "score": 80,
-    "icon": "./assets/images/icon-reaction.svg"
+    "icon": "public/frontend-mentor/result-summary/icon-reaction.svg"
   },
   {
     "category": "Memory",
     "score": 92,
-    "icon": "./assets/images/icon-memory.svg"
+    "icon": "./icon-memory.svg"
   },
   {
     "category": "Verbal",

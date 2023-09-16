@@ -1,4 +1,9 @@
 import { WholeComponent } from "./components/WholeCmp";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Results Component",
+};
 
 export default function ResultsSummary() {
   return (
