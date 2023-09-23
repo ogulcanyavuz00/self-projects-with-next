@@ -1,53 +1,64 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-export function TakeANote({ handleNoteChange }: any) {
+import { TakeANoteDefault } from "./TakeANoteDefault";
+import { TakeANoteFocused } from "./TakeANoteFocused";
+
+type TakeANote = {
+  handleNoteChange(event): void;
+};
+
+export function TakeANote({ handleNoteChange, noteData }: any) {
   const [inputHasFocus, setInputHasFocus] = useState(false);
-  const inputRef = useRef(null);
 
-  function handleFocus() {
-    setInputHasFocus(true);
+  const takeANoteFocusedRef = useRef<HTMLDivElement>(null);
+
+  function toggleFocus() {
+    setInputHasFocus((p) => !p);
   }
-  function handleBlur() {
+
+  function disableFocus() {
     setInputHasFocus(false);
   }
 
+  useEffect(() => {
+    function handleEscapeKey(e: KeyboardEvent) {
+      if (e.key === "Escape" && inputHasFocus === true) {
+        disableFocus();
+      }
+    }
+
+    function handleClickOutside(e: MouseEvent) {
+      if (!takeANoteFocusedRef.current?.contains(e.target as Node)) {
+        disableFocus();
+      }
+    }
+
+    document.addEventListener("keydown", handleEscapeKey);
+
+    if (inputHasFocus) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [inputHasFocus]);
+
   return (
-    <div ref={inputRef} onFocus={handleFocus} onBlur={handleBlur}>
+    <div>
       {inputHasFocus ? (
-        <TakeANoteFocused handleNoteChange={handleNoteChange} />
+        <TakeANoteFocused
+          handleNoteChange={handleNoteChange}
+          noteData={noteData}
+          toggleFocus={toggleFocus}
+          takeANoteFocusedRef={takeANoteFocusedRef}
+        />
       ) : (
-        <TakeANoteDefault />
+        <TakeANoteDefault toggleFocus={toggleFocus} />
       )}
     </div>
-  );
-}
-
-function TakeANoteDefault() {
-  return (
-    <input
-      type="text"
-      name="title"
-      placeholder="Take a note..."
-      id="default-input-component"
-      className="border-2 border-gray-300 border-solid outline-none"
-    />
-  );
-}
-
-function TakeANoteFocused({ handleNoteChange }: any) {
-  const focusedInputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    focusedInputRef.current && focusedInputRef.current.focus();
-  }, []);
-  return (
-    <input
-      ref={focusedInputRef}
-      type="text"
-      name="note"
-      placeholder="Take aasfafasfasf note..."
-      id="focused-input-component"
-      onChange={handleNoteChange}
-      className="border-2 border-gray-300 border-solid outline-none"
-    />
   );
 }
