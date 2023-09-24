@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 import { TakeANoteDefault } from "./TakeANoteDefault";
 import { TakeANoteFocused } from "./TakeANoteFocused";
@@ -15,28 +15,28 @@ export function TakeANote({
 
   const takeANoteFocusedRef = useRef<HTMLDivElement>(null);
 
-  function toggleFocus() {
-    setInputHasFocus((p) => !p);
+  function enableFocusForBlurredComponent() {
+    setInputHasFocus(true);
   }
 
-  function disableFocus() {
+  const disableFocusForFocusedComponent = useCallback(() => {
+    if (noteData.title || noteData.note) {
+      addNoteToNoteList(noteData);
+    }
+    nullifyNoteChange();
     setInputHasFocus(false);
-  }
+  }, [noteData, addNoteToNoteList, nullifyNoteChange]);
 
   useEffect(() => {
     function handleEscapeKey(e: KeyboardEvent) {
       if (e.key === "Escape" && inputHasFocus === true) {
-        addNoteToNoteList(noteData);
-        nullifyNoteChange();
-        disableFocus();
+        disableFocusForFocusedComponent();
       }
     }
 
     function handleClickOutside(e: MouseEvent) {
       if (!takeANoteFocusedRef.current?.contains(e.target as Node)) {
-        addNoteToNoteList(noteData);
-        nullifyNoteChange();
-        disableFocus();
+        disableFocusForFocusedComponent();
       }
     }
 
@@ -52,7 +52,7 @@ export function TakeANote({
       document.removeEventListener("keydown", handleEscapeKey);
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [inputHasFocus, noteData, addNoteToNoteList, nullifyNoteChange]);
+  }, [inputHasFocus, disableFocusForFocusedComponent]);
 
   return (
     <div>
@@ -60,11 +60,13 @@ export function TakeANote({
         <TakeANoteFocused
           handleNoteChange={handleNoteChange}
           noteData={noteData}
-          toggleFocus={toggleFocus}
+          disableFocusForFocusedComponent={disableFocusForFocusedComponent}
           takeANoteFocusedRef={takeANoteFocusedRef}
         />
       ) : (
-        <TakeANoteDefault toggleFocus={toggleFocus} />
+        <TakeANoteDefault
+          enableFocusForBlurredComponent={enableFocusForBlurredComponent}
+        />
       )}
     </div>
   );

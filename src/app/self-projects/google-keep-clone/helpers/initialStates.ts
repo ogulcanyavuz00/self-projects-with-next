@@ -1,3 +1,5 @@
+import { InitialNoteData, InitialAllNoteList } from "./types";
+
 const initialNoteData: InitialNoteData = {
   title: "",
   note: "",
@@ -10,6 +12,6 @@ const initialNoteData: InitialNoteData = {
   label: "",
 };
 
-const initialAllNoteList: InitialNoteData[] | null[] = [];
+const initialAllNoteList: InitialAllNoteList = [];
 
 export { initialNoteData, initialAllNoteList };

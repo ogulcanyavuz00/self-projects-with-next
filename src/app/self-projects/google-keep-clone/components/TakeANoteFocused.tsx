@@ -4,7 +4,7 @@ import { TakeANoteFocusedComponent } from "../helpers/types";
 export function TakeANoteFocused({
   handleNoteChange,
   noteData,
-  toggleFocus,
+  disableFocusForFocusedComponent,
   takeANoteFocusedRef,
 }: TakeANoteFocusedComponent) {
   const noteInputRef = useRef<HTMLInputElement>(null);
@@ -54,7 +54,10 @@ export function TakeANoteFocused({
           checked={noteData.isArchived}
         />
       </div>
-      <button onClick={toggleFocus} className="block ml-auto mr-5">
+      <button
+        onClick={disableFocusForFocusedComponent}
+        className="block ml-auto mr-5"
+      >
         Close
       </button>
     </div>

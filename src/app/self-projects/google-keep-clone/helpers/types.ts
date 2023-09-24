@@ -38,6 +38,8 @@ type InitialNoteData = {
   backgroundImage: BackgroundColor;
 };
 
+type InitialAllNoteList = InitialNoteData[] | null[];
+
 type HandleNoteChange = (event: ChangeEvent<HTMLInputElement>) => void;
 
 type AddNoteToNoteList = (noteDataParam: InitialNoteData) => void;
@@ -58,20 +60,26 @@ type TakeANoteComponent = {
 type TakeANoteFocusedComponent = {
   handleNoteChange: HandleNoteChange;
   noteData: InitialNoteData;
-  toggleFocus: NoParamReturnVoid;
+  disableFocusForFocusedComponent: NoParamReturnVoid;
   takeANoteFocusedRef: TakeANoteFocusedRef;
 };
 
 type TakeANoteDefaultComponent = {
-  toggleFocus: NoParamReturnVoid;
+  enableFocusForBlurredComponent: NoParamReturnVoid;
+};
+
+type DisplayNotesComponent = {
+  allNoteList: InitialNoteData[];
 };
 
 export type {
   InitialNoteData,
+  InitialAllNoteList,
   HandleNoteChange,
   NoParamReturnVoid,
   AddNoteToNoteList,
   TakeANoteComponent,
   TakeANoteFocusedComponent,
   TakeANoteDefaultComponent,
+  DisplayNotesComponent,
 };
