@@ -1,4 +1,6 @@
-export function TakeANoteDefault({ toggleFocus }: any) {
+import { TakeANoteDefaultComponent } from "../helpers/types";
+
+export function TakeANoteDefault({ toggleFocus }: TakeANoteDefaultComponent) {
   return (
     <input
       type="text"

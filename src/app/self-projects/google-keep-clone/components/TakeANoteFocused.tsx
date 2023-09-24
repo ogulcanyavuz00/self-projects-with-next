@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
+import { TakeANoteFocusedComponent } from "../helpers/types";
 
 export function TakeANoteFocused({
   handleNoteChange,
   noteData,
   toggleFocus,
   takeANoteFocusedRef,
-}: any) {
+}: TakeANoteFocusedComponent) {
   const noteInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export function TakeANoteFocused({
       ref={takeANoteFocusedRef}
       className="border-2 border-gray-300 border-solid "
     >
-      <div className="flex ">
+      <div className="flex">
         <input
           type="text"
           name="title"
@@ -44,7 +45,7 @@ export function TakeANoteFocused({
         className="outline-none"
         autoComplete="off"
       />
-      <div>
+      <div className="flex place-content-evenly">
         <button>bO</button>
         <input
           type="checkbox"
@@ -53,7 +54,9 @@ export function TakeANoteFocused({
           checked={noteData.isArchived}
         />
       </div>
-      <button onClick={toggleFocus}>Close</button>
+      <button onClick={toggleFocus} className="block ml-auto mr-5">
+        Close
+      </button>
     </div>
   );
 }

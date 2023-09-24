@@ -3,11 +3,14 @@ import { useEffect, useState, useRef } from "react";
 import { TakeANoteDefault } from "./TakeANoteDefault";
 import { TakeANoteFocused } from "./TakeANoteFocused";
 
-type TakeANote = {
-  handleNoteChange(event): void;
-};
+import { TakeANoteComponent } from "../helpers/types";
 
-export function TakeANote({ handleNoteChange, noteData }: any) {
+export function TakeANote({
+  handleNoteChange,
+  noteData,
+  addNoteToNoteList,
+  nullifyNoteChange,
+}: TakeANoteComponent) {
   const [inputHasFocus, setInputHasFocus] = useState(false);
 
   const takeANoteFocusedRef = useRef<HTMLDivElement>(null);
@@ -23,12 +26,16 @@ export function TakeANote({ handleNoteChange, noteData }: any) {
   useEffect(() => {
     function handleEscapeKey(e: KeyboardEvent) {
       if (e.key === "Escape" && inputHasFocus === true) {
+        addNoteToNoteList(noteData);
+        nullifyNoteChange();
         disableFocus();
       }
     }
 
     function handleClickOutside(e: MouseEvent) {
       if (!takeANoteFocusedRef.current?.contains(e.target as Node)) {
+        addNoteToNoteList(noteData);
+        nullifyNoteChange();
         disableFocus();
       }
     }
@@ -45,7 +52,7 @@ export function TakeANote({ handleNoteChange, noteData }: any) {
       document.removeEventListener("keydown", handleEscapeKey);
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [inputHasFocus]);
+  }, [inputHasFocus, noteData, addNoteToNoteList, nullifyNoteChange]);
 
   return (
     <div>
