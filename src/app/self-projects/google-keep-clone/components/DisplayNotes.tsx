@@ -5,14 +5,15 @@ export function DisplayNotes({
   allNoteList,
   deleteNoteFromNoteList,
 }: DisplayNotesComponent) {
-  const notesToDisplay = allNoteList.map((noteData) => {
-    return (
-      <SingleNote
-        key={noteData?.id}
-        noteData={noteData}
-        deleteNoteFromNoteList={deleteNoteFromNoteList}
-      />
-    );
-  });
-  return notesToDisplay;
+  return (
+    <div>
+      {allNoteList.map((noteData) => (
+        <SingleNote
+          key={noteData?.id}
+          noteData={noteData}
+          deleteNoteFromNoteList={deleteNoteFromNoteList}
+        />
+      ))}
+    </div>
+  );
 }

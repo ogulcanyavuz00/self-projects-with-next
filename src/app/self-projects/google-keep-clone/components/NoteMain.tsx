@@ -26,7 +26,7 @@ export function NoteMain() {
     useState<InitialAllNoteList>(initialAllNoteList);
 
   useEffect(() => {
-    let storedData: InitialAllNoteList | null = null;
+    let storedData: InitialAllNoteList = initialAllNoteList;
     try {
       storedData =
         JSON.parse(localStorage.getItem("allNoteList") as string) ||

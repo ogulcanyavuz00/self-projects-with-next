@@ -13,6 +13,7 @@ export function SingleNote({
         <button onClick={() => deleteNoteFromNoteList(noteData?.id)}>
           Delete Note
         </button>
+        i
       </div>
     </div>
   );
