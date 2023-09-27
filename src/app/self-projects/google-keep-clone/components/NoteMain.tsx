@@ -2,7 +2,7 @@
 
 import { TakeANote } from "./TakeANote";
 import { DisplayNotes } from "./DisplayNotes";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { initialNoteData, initialAllNoteList } from "../helpers/initialStates";
 import {
   InitialNoteData,
@@ -14,26 +14,36 @@ import {
 } from "../helpers/types";
 
 export function NoteMain() {
+  const isItFirstRenderRef = useRef<"firstRender" | "notFirstRender">(
+    "firstRender"
+  );
+
   const [noteData, setNoteData] = useState<InitialNoteData>(
     () => initialNoteData
   );
 
-  let storedData: InitialAllNoteList | null = null;
-  try {
-    storedData = JSON.parse(localStorage.getItem("allNoteList") || "null");
-  } catch (error) {
-    console.error("Error parsing data from local storage:", error);
-  }
-
-  const [allNoteList, setAllNoteList] = useState<InitialAllNoteList>(
-    storedData || initialAllNoteList
-  );
+  const [allNoteList, setAllNoteList] =
+    useState<InitialAllNoteList>(initialAllNoteList);
 
   useEffect(() => {
+    let storedData: InitialAllNoteList | null = null;
     try {
-      localStorage.setItem("allNoteList", JSON.stringify(allNoteList));
+      storedData =
+        JSON.parse(localStorage.getItem("allNoteList") as string) ||
+        initialAllNoteList;
+      setAllNoteList(storedData);
     } catch (error) {
-      console.error("Error saving data to local storage:", error);
+      console.error("Error parsing data from local storage:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isItFirstRenderRef.current === "notFirstRender") {
+      try {
+        localStorage.setItem("allNoteList", JSON.stringify(allNoteList));
+      } catch (error) {
+        console.error("Error saving data to local storage:", error);
+      }
     }
   }, [allNoteList]);
 
@@ -52,6 +62,7 @@ export function NoteMain() {
   };
 
   const addNoteToNoteList: AddNoteToNoteList = function (noteDataParam) {
+    isItFirstRenderRef.current = "notFirstRender";
     setAllNoteList((p) => [noteDataParam, ...p]);
   };
 
