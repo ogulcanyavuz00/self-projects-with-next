@@ -2,7 +2,6 @@ import { useEffect, useState, useRef, useCallback } from "react";
 
 import { TakeANoteDefault } from "./TakeANoteDefault";
 import { TakeANoteFocused } from "./TakeANoteFocused";
-
 import { TakeANoteComponent } from "../helpers/types";
 
 export function TakeANote({

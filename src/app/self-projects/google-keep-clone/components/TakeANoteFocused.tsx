@@ -13,6 +13,8 @@ export function TakeANoteFocused({
     noteInputRef.current?.focus();
   }, []);
 
+  function toggleIsPinned() {}
+
   return (
     <div
       ref={takeANoteFocusedRef}

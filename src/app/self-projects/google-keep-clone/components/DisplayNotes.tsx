@@ -1,9 +1,18 @@
 import { DisplayNotesComponent } from "../helpers/types";
 import { SingleNote } from "./DisplayNotesSingleNote";
 
-export function DisplayNotes({ allNoteList }: DisplayNotesComponent) {
-  const notesToDisplay = allNoteList.map((noteData) => (
-    <SingleNote noteData={noteData} key={crypto.randomUUID()} />
-  ));
+export function DisplayNotes({
+  allNoteList,
+  deleteNoteFromNoteList,
+}: DisplayNotesComponent) {
+  const notesToDisplay = allNoteList.map((noteData) => {
+    return (
+      <SingleNote
+        key={noteData?.id}
+        noteData={noteData}
+        deleteNoteFromNoteList={deleteNoteFromNoteList}
+      />
+    );
+  });
   return notesToDisplay;
 }

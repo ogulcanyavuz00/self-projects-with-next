@@ -10,6 +10,7 @@ const initialNoteData: InitialNoteData = {
   backgroundColor: "default",
   backgroundImage: "default",
   label: "",
+  id: "",
 };
 
 const initialAllNoteList: InitialAllNoteList = [];

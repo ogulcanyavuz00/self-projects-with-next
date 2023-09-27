@@ -35,10 +35,11 @@ type InitialNoteData = {
   isTrashed: boolean;
   label: string;
   backgroundColor: BackgroundColor;
-  backgroundImage: BackgroundColor;
+  backgroundImage: BackgroundImage;
+  id: null | string;
 };
 
-type InitialAllNoteList = InitialNoteData[] | null[];
+type InitialAllNoteList = (InitialNoteData | null)[];
 
 type HandleNoteChange = (event: ChangeEvent<HTMLInputElement>) => void;
 
@@ -49,6 +50,8 @@ type NoParamReturnVoid = () => void;
 type TakeANoteFocusedRef = {
   current: null | HTMLDivElement;
 };
+
+type DeleteNoteFromNoteList = (id: string | null | undefined) => void;
 
 type TakeANoteComponent = {
   handleNoteChange: HandleNoteChange;
@@ -69,7 +72,13 @@ type TakeANoteDefaultComponent = {
 };
 
 type DisplayNotesComponent = {
-  allNoteList: InitialNoteData[];
+  allNoteList: (InitialNoteData | null)[];
+  deleteNoteFromNoteList: DeleteNoteFromNoteList;
+};
+
+type DisplayNotesSingleNoteComponent = {
+  noteData: InitialNoteData | null;
+  deleteNoteFromNoteList: DeleteNoteFromNoteList;
 };
 
 export type {
@@ -78,8 +87,10 @@ export type {
   HandleNoteChange,
   NoParamReturnVoid,
   AddNoteToNoteList,
+  DeleteNoteFromNoteList,
   TakeANoteComponent,
   TakeANoteFocusedComponent,
   TakeANoteDefaultComponent,
   DisplayNotesComponent,
+  DisplayNotesSingleNoteComponent,
 };
