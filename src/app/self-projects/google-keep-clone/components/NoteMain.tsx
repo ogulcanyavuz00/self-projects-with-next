@@ -2,7 +2,7 @@
 
 import { TakeANote } from "./TakeANote";
 import { DisplayNotes } from "./DisplayNotes";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, ChangeEvent } from "react";
 import { initialNoteData, initialAllNoteList } from "../helpers/initialStates";
 import {
   InitialNoteData,
@@ -22,8 +22,9 @@ export function NoteMain() {
     () => initialNoteData
   );
 
-  const [allNoteList, setAllNoteList] =
-    useState<InitialAllNoteList>(initialAllNoteList);
+  const [allNoteList, setAllNoteList] = useState<InitialAllNoteList>(
+    () => initialAllNoteList
+  );
 
   useEffect(() => {
     let storedData: InitialAllNoteList = initialAllNoteList;
@@ -53,7 +54,6 @@ export function NoteMain() {
       ...p,
       [name]: type === "checkbox" ? checked : value,
       lastEdited: new Date(),
-      id: crypto.randomUUID(),
     }));
   };
 
@@ -72,6 +72,26 @@ export function NoteMain() {
     );
   };
 
+  const handleDisplayedNoteChange = function (
+    event: ChangeEvent<HTMLInputElement>,
+    id: string
+  ) {
+    const { name, value, type, checked } = event.target;
+    setAllNoteList((prevAllNoteList) =>
+      prevAllNoteList.map((prevSingleNote) =>
+        prevSingleNote?.id === id
+          ? {
+              ...prevSingleNote,
+              [name]: type === "checkbox" ? checked : value,
+              lastEdited: new Date(),
+            }
+          : prevSingleNote
+      )
+    );
+  };
+
+  console.log(allNoteList[0]);
+
   return (
     <main className="grid place-content-center">
       <TakeANote
@@ -83,22 +103,8 @@ export function NoteMain() {
       <DisplayNotes
         allNoteList={allNoteList}
         deleteNoteFromNoteList={deleteNoteFromNoteList}
+        handleDisplayedNoteChange={handleDisplayedNoteChange}
       />
     </main>
   );
 }
-
-// const handleDisplayedNoteChange = function (event: any, id: any) {
-//   const { name, value, type, checked } = event.target;
-//   setAllNoteList((prevAllNoteList) =>
-//     prevAllNoteList.map((prevSingleNote) =>
-//       prevSingleNote?.id === id
-//         ? {
-//             ...prevSingleNote,
-//             [name]: type === "checkbox" ? checked : value,
-//             lastEdited: new Date(),
-//           }
-//         : prevSingleNote
-//     )
-//   );
-// };

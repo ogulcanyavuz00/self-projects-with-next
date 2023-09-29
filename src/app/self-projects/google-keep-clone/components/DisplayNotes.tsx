@@ -4,6 +4,7 @@ import { SingleNote } from "./DisplayNotesSingleNote";
 export function DisplayNotes({
   allNoteList,
   deleteNoteFromNoteList,
+  handleDisplayedNoteChange,
 }: DisplayNotesComponent) {
   return (
     <div>
@@ -12,6 +13,7 @@ export function DisplayNotes({
           key={noteData?.id}
           noteData={noteData}
           deleteNoteFromNoteList={deleteNoteFromNoteList}
+          handleDisplayedNoteChange={handleDisplayedNoteChange}
         />
       ))}
     </div>
