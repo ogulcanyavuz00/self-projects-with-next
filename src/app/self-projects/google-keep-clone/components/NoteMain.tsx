@@ -2,7 +2,7 @@
 
 import { TakeANote } from "./TakeANote";
 import { DisplayNotes } from "./DisplayNotes";
-import { useState, useEffect, useMemo, useRef, ChangeEvent } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { initialNoteData, initialAllNoteList } from "../helpers/initialStates";
 import {
   InitialNoteData,
@@ -27,7 +27,7 @@ export function NoteMain() {
   );
 
   useEffect(() => {
-    let storedData: InitialAllNoteList = initialAllNoteList;
+    let storedData = initialAllNoteList;
     try {
       storedData =
         JSON.parse(localStorage.getItem("allNoteList") as string) ||
@@ -48,13 +48,32 @@ export function NoteMain() {
     }
   }, [allNoteList]);
 
-  const handleNoteChange: HandleNoteChange = function (event) {
+  const handleUserNoteChange = function (
+    event: ChangeEvent<HTMLInputElement>,
+    id: string
+  ) {
     const { name, value, type, checked } = event.target;
-    setNoteData((p) => ({
-      ...p,
-      [name]: type === "checkbox" ? checked : value,
-      lastEdited: new Date(),
-    }));
+
+    if (id) {
+      setAllNoteList((prevAllNoteList) =>
+        prevAllNoteList.map((prevSingleNote) =>
+          prevSingleNote?.id === id
+            ? {
+                ...prevSingleNote,
+                [name]: type === "checkbox" ? checked : value,
+                lastEdited: new Date(),
+              }
+            : prevSingleNote
+        )
+      );
+    } else {
+      setNoteData((prevSingleNote) => ({
+        ...prevSingleNote,
+        [name]: type === "checkbox" ? checked : value,
+        lastEdited: new Date(),
+        id: crypto.randomUUID(),
+      }));
+    }
   };
 
   const nullifyNoteChange: NoParamReturnVoid = function () {
@@ -72,30 +91,13 @@ export function NoteMain() {
     );
   };
 
-  const handleDisplayedNoteChange = function (
-    event: ChangeEvent<HTMLInputElement>,
-    id: string
-  ) {
-    const { name, value, type, checked } = event.target;
-    setAllNoteList((prevAllNoteList) =>
-      prevAllNoteList.map((prevSingleNote) =>
-        prevSingleNote?.id === id
-          ? {
-              ...prevSingleNote,
-              [name]: type === "checkbox" ? checked : value,
-              lastEdited: new Date(),
-            }
-          : prevSingleNote
-      )
-    );
-  };
-
+  console.log(allNoteList.map((el) => el?.id));
   console.log(allNoteList[0]);
 
   return (
     <main className="grid place-content-center">
       <TakeANote
-        handleNoteChange={handleNoteChange}
+        handleUserNoteChange={handleUserNoteChange}
         noteData={noteData}
         addNoteToNoteList={addNoteToNoteList}
         nullifyNoteChange={nullifyNoteChange}
@@ -103,8 +105,35 @@ export function NoteMain() {
       <DisplayNotes
         allNoteList={allNoteList}
         deleteNoteFromNoteList={deleteNoteFromNoteList}
-        handleDisplayedNoteChange={handleDisplayedNoteChange}
+        handleUserNoteChange={handleUserNoteChange}
       />
     </main>
   );
 }
+
+// const handleNoteChange: HandleNoteChange = function (event) {
+//   const { name, value, type, checked } = event.target;
+//   setNoteData((p) => ({
+//     ...p,
+//     [name]: type === "checkbox" ? checked : value,
+//     lastEdited: new Date(),
+//   }));
+// };
+
+// const handleDisplayedNoteChange = function (
+//   event: ChangeEvent<HTMLInputElement>,
+//   id: string
+// ) {
+//   const { name, value, type, checked } = event.target;
+//   setAllNoteList((prevAllNoteList) =>
+//     prevAllNoteList.map((prevSingleNote) =>
+//       prevSingleNote?.id === id
+//         ? {
+//             ...prevSingleNote,
+//             [name]: type === "checkbox" ? checked : value,
+//             lastEdited: new Date(),
+//           }
+//         : prevSingleNote
+//     )
+//   );
+// };

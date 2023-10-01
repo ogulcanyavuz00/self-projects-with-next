@@ -5,7 +5,7 @@ import { TakeANoteFocused } from "./TakeANoteFocused";
 import { TakeANoteComponent } from "../helpers/types";
 
 export function TakeANote({
-  handleNoteChange,
+  handleUserNoteChange,
   noteData,
   addNoteToNoteList,
   nullifyNoteChange,
@@ -57,7 +57,7 @@ export function TakeANote({
     <div>
       {inputHasFocus ? (
         <TakeANoteFocused
-          handleNoteChange={handleNoteChange}
+          handleUserNoteChange={handleUserNoteChange}
           noteData={noteData}
           disableFocusForFocusedComponent={disableFocusForFocusedComponent}
           takeANoteFocusedRef={takeANoteFocusedRef}

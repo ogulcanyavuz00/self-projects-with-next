@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { TakeANoteFocusedComponent } from "../helpers/types";
 
 export function TakeANoteFocused({
-  handleNoteChange,
+  handleUserNoteChange,
   noteData,
   disableFocusForFocusedComponent,
   takeANoteFocusedRef,
@@ -12,8 +12,6 @@ export function TakeANoteFocused({
   useEffect(() => {
     noteInputRef.current?.focus();
   }, []);
-
-  function toggleIsPinned() {}
 
   return (
     <div
@@ -27,14 +25,14 @@ export function TakeANoteFocused({
           placeholder="Title"
           className="outline-none"
           value={noteData.title}
-          onChange={handleNoteChange}
+          onChange={handleUserNoteChange}
           autoComplete="off"
         />
         <input
           type="checkbox"
           name="isPinned"
           checked={noteData.isPinned}
-          onChange={handleNoteChange}
+          onChange={handleUserNoteChange}
         />
       </div>
       <input
@@ -42,7 +40,7 @@ export function TakeANoteFocused({
         type="text"
         name="note"
         placeholder="Take a note..."
-        onChange={handleNoteChange}
+        onChange={handleUserNoteChange}
         value={noteData.note}
         className="outline-none"
         autoComplete="off"
@@ -52,7 +50,7 @@ export function TakeANoteFocused({
         <input
           type="checkbox"
           name="isArchived"
-          onChange={handleNoteChange}
+          onChange={handleUserNoteChange}
           checked={noteData.isArchived}
         />
       </div>
